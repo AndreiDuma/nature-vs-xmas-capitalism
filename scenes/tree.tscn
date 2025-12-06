@@ -6,6 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://cu60wdxfpnvok" path="res://assets/sprites/very-snowy-tree-falling.png" id="3_ake3r"]
 [ext_resource type="Texture2D" uid="uid://dyguwjrax46u0" path="res://assets/sprites/decorated-tree.png" id="3_qd6xs"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ake3r"]
+atlas = ExtResource("3_qd6xs")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7adx"]
+atlas = ExtResource("3_qd6xs")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xprpn"]
+atlas = ExtResource("3_qd6xs")
+region = Rect2(64, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_18mvg"]
 atlas = ExtResource("3_ake3r")
 region = Rect2(0, 0, 32, 32)
@@ -22,20 +34,22 @@ region = Rect2(64, 0, 32, 32)
 atlas = ExtResource("3_ake3r")
 region = Rect2(96, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ake3r"]
-atlas = ExtResource("3_qd6xs")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_r7adx"]
-atlas = ExtResource("3_qd6xs")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xprpn"]
-atlas = ExtResource("3_qd6xs")
-region = Rect2(64, 0, 32, 32)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_8qw6h"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ake3r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7adx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xprpn")
+}],
+"loop": true,
+"name": &"decorated",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_18mvg")
@@ -50,21 +64,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_5yujg")
 }],
 "loop": true,
-"name": &"dead",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ake3r")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_r7adx")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xprpn")
-}],
-"loop": true,
-"name": &"decorated",
+"name": &"falling",
 "speed": 5.0
 }, {
 "frames": [{
@@ -87,5 +87,3 @@ position = Vector2(0, -2)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_8qw6h")
 animation = &"decorated"
-frame = 2
-frame_progress = 0.26837733
