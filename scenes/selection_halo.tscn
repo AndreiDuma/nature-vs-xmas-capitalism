@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://ltcxa74831fr"]
+
+[ext_resource type="Texture2D" uid="uid://bd0q1goqf3dh3" path="res://assets/sprites/very-snowy-tree-layers.png" id="1_yqi71"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d3ugd"]
+atlas = ExtResource("1_yqi71")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_btrnl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d3ugd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="SelectionHalo" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_btrnl")
