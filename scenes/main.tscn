@@ -1,9 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnqn5ryjgm6gj"]
+[gd_scene load_steps=2 format=3 uid="uid://bnqn5ryjgm6gj"]
 
 [ext_resource type="PackedScene" uid="uid://dlhyfw5yggq1d" path="res://scenes/board.tscn" id="1_o5qli"]
-[ext_resource type="PackedScene" uid="uid://ltcxa74831fr" path="res://scenes/halo.tscn" id="3_jyhfs"]
-[ext_resource type="PackedScene" uid="uid://rd2s0sy8f0sv" path="res://scenes/tree.tscn" id="3_sugp2"]
-[ext_resource type="PackedScene" uid="uid://bhr8dqjfkavad" path="res://scenes/santa.tscn" id="4_jyhfs"]
 
 [node name="Main" type="Node2D"]
 
@@ -11,14 +8,3 @@
 zoom = Vector2(3, 3)
 
 [node name="Board" parent="." instance=ExtResource("1_o5qli")]
-
-[node name="Santa" parent="." instance=ExtResource("4_jyhfs")]
-position = Vector2(0, -192)
-
-[node name="SelectionHalo" parent="Santa" instance=ExtResource("3_jyhfs")]
-
-[node name="Tree" parent="." instance=ExtResource("3_sugp2")]
-position = Vector2(96, 0)
-
-[node name="Tree2" parent="." instance=ExtResource("3_sugp2")]
-position = Vector2(0, -96)

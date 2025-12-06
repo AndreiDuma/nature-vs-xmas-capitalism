@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dlhyfw5yggq1d"]
+[gd_scene load_steps=5 format=3 uid="uid://dlhyfw5yggq1d"]
 
 [ext_resource type="Texture2D" uid="uid://bga8dn2gybjyt" path="res://assets/sprites/board.png" id="1_bw3vb"]
 [ext_resource type="Script" uid="uid://dhtjk3kivkp42" path="res://scripts/board.gd" id="1_tx6nw"]
+[ext_resource type="PackedScene" uid="uid://bhr8dqjfkavad" path="res://scenes/santa.tscn" id="3_fv4ni"]
+[ext_resource type="PackedScene" uid="uid://rd2s0sy8f0sv" path="res://scenes/tree.tscn" id="4_dxjtj"]
 
 [node name="Board" type="Node2D"]
 script = ExtResource("1_tx6nw")
@@ -9,3 +11,47 @@ script = ExtResource("1_tx6nw")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(6.4, 6.4)
 texture = ExtResource("1_bw3vb")
+
+[node name="Santa" parent="." instance=ExtResource("3_fv4ni")]
+position = Vector2(0, -192)
+
+[node name="Trees" type="Node2D" parent="."]
+
+[node name="1" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(-288, 96)
+
+[node name="2" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(-192, 96)
+
+[node name="3" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(-96, 96)
+
+[node name="4" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(0, 96)
+
+[node name="5" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(96, 96)
+
+[node name="6" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(192, 96)
+
+[node name="7" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(288, 96)
+
+[node name="8" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(-96, 192)
+
+[node name="9" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(0, 192)
+
+[node name="10" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(96, 192)
+
+[node name="11" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(-96, 288)
+
+[node name="12" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(0, 288)
+
+[node name="13" parent="Trees" instance=ExtResource("4_dxjtj")]
+position = Vector2(96, 288)

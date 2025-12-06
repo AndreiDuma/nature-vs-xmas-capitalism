@@ -7,10 +7,6 @@ const UNIT_Y := Vector2i.RIGHT * GRID_UNIT_SIZE
 var board = Board.new()
 var nodes = []
 
-func _ready() -> void:
-	var tree = preload("res://scenes/santa.tscn").instantiate()
-	add_child(tree)
-
 #func _ready() -> void:
 	#for i in range(board.SIZE):
 		#nodes.append([])

@@ -20,6 +20,16 @@ config/icon="res://icon.svg"
 window/size/viewport_width=2048
 window/size/viewport_height=2048
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "yellow",
+"res://assets/aseprite/": "gray",
+"res://scenes/": "teal",
+"res://scripts/": "blue"
+}
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.019607844, 0.19607843, 0.22352941, 1)

@@ -3,13 +3,18 @@ class_name SnowyTree
 
 @onready var _tree = $AnimatedSprite2D
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	_tree.play("snowy-stand")
+enum State {SNOWY, DECORATED}
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+@export var state := State.SNOWY
+
 func _process(_delta):
 	if Input.is_key_pressed(KEY_SPACE):
-		_tree.play("decorated-stand")
+		state = State.DECORATED
 	else:
-		_tree.play("snowy-stand")
+		state = State.SNOWY
+
+	match state:
+		State.SNOWY:
+			_tree.play("snowy")
+		State.DECORATED:
+			_tree.play("decorated")
