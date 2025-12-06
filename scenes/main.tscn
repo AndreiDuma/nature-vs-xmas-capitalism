@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dlhyfw5yggq1d" path="res://scenes/board.tscn" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://cufix2v26b4kl" path="res://scenes/tree.tscn" id="3_sugp2"]
-[ext_resource type="PackedScene" uid="uid://chbo60vartq0q" path="res://scenes/real_santa.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://bhr8dqjfkavad" path="res://scenes/real_santa.tscn" id="4_jyhfs"]
 [ext_resource type="PackedScene" path="res://scenes/real_tree.tscn" id="4_tbgi4"]
 
 [node name="Main" type="Node2D"]
