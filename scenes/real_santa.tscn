@@ -1,19 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://bhr8dqjfkavad"]
+[gd_scene load_steps=6 format=3 uid="uid://bhr8dqjfkavad"]
 
-[ext_resource type="Texture2D" uid="uid://dhf0wdb0oosk3" path="res://assets/sprites/real-santa.png" id="1_68akc"]
+[ext_resource type="Texture2D" uid="uid://c0xulpwp564vf" path="res://assets/sprites/real-santa-standing.png" id="1_fm1lf"]
+[ext_resource type="Script" uid="uid://bgxdadi7kal5n" path="res://scenes/animated-santa.gd" id="2_713ki"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c264v"]
+atlas = ExtResource("1_fm1lf")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d32s8"]
+atlas = ExtResource("1_fm1lf")
+region = Rect2(32, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fm1lf"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_68akc")
+"texture": SubResource("AtlasTexture_c264v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d32s8")
 }],
 "loop": true,
-"name": &"default",
+"name": &"santa-standing",
 "speed": 5.0
 }]
 
 [node name="RealSanta" type="Node2D"]
+script = ExtResource("2_713ki")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_fm1lf")
+animation = &"santa-standing"
