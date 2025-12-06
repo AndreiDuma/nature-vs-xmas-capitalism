@@ -1,48 +1,27 @@
-extends Node2D
+extends RefCounted
+class_name Board
 
-enum {I, V}
+const SIZE = 7
+
+enum {INVALID, VALID}
+enum {I = INVALID, V = VALID}
 
 const empty_board = [
-	[I, I, E, E, E, I, I],
-	[I, I, E, E, E, I, I],
-	[E, E, E, E, E, E, E],
-	[E, E, E, E, E, E, E],
-	[E, E, E, E, E, E, E],
-	[I, I, E, E, E, I, I],
-	[I, I, E, E, E, I, I],
+	[I, I, V, V, V, I, I],
+	[I, I, V, V, V, I, I],
+	[V, V, V, V, V, V, V],
+	[V, V, V, V, V, V, V],
+	[V, V, V, V, V, V, V],
+	[I, I, V, V, V, I, I],
+	[I, I, V, V, V, I, I],
 ]
-
-enum Piece {EMPTY, SANTA, TREE}
-enum {EMPTY = Piece.EMPTY, SANTA = Piece.SANTA, TREE = Piece.TREE}
-enum {E = EMPTY, S = SANTA, T = TREE}
-
-const initial_board = [
-	[I, I, E, E, E, I, I],
-	[I, I, E, S, E, I, I],
-	[E, E, E, E, E, E, E],
-	[E, E, E, E, E, E, E],
-	[T, T, T, T, T, T, T],
-	[I, I, T, T, T, I, I],
-	[I, I, T, T, T, I, I],
-]
-
-@onready
-var board = initial_board;
 
 static func is_allowed_position(p: Position) -> bool:
 	if p.x < 0 || p.x > 6 || p.y < 0 || p.y > 6:
 		return false
-	return empty_board[p.x][p.y] == EMPTY
+	return empty_board[p.x][p.y] == VALID
 
-func get_piece(p: Position) -> Piece:
-	assert(is_allowed_position(p))
-	return board[p.x][p.y]
-
-func set_piece(p: Position, piece: Piece):
-	assert(is_allowed_position(p))
-	board[p.x][p.y] = piece
-
-static func neighbor_positions(p: Position, include_diagonals: bool) -> Array:
+static func neighbor_positions(p: Position, include_diagonals: bool) -> Array[Position]:
 	assert(is_allowed_position(p))
 	var candidates = []
 	for d in [
@@ -58,17 +37,39 @@ static func neighbor_positions(p: Position, include_diagonals: bool) -> Array:
 				candidates.append(Position.new(p.x + dx, p.y + dy))
 	return candidates.filter(func (cp): return is_allowed_position(cp))
 
-func available_moves(p: Position, include_diagonals: bool) -> Array:
+enum Piece {EMPTY, SANTA, TREE}
+enum {EMPTY = Piece.EMPTY, SANTA = Piece.SANTA, TREE = Piece.TREE}
+enum {E = EMPTY, S = SANTA, T = TREE}
+
+var board = [
+	[I, I, E, E, E, I, I],
+	[I, I, E, S, E, I, I],
+	[E, E, E, E, E, E, E],
+	[E, E, E, E, E, E, E],
+	[T, T, T, T, T, T, T],
+	[I, I, T, T, T, I, I],
+	[I, I, T, T, T, I, I],
+]
+
+func get_piece(p: Position) -> Piece:
+	assert(is_allowed_position(p))
+	return board[p.x][p.y]
+
+func set_piece(p: Position, piece: Piece):
+	assert(is_allowed_position(p))
+	board[p.x][p.y] = piece
+
+func available_moves(p: Position, include_diagonals: bool) -> Array[Position]:
 	assert(is_allowed_position(p) and get_piece(p) in [SANTA, TREE])
 	return neighbor_positions(p, include_diagonals).filter(
 		func (np): return get_piece(np) == EMPTY
 	)
 
-func available_santa_moves(p: Position) -> Array:
+func available_santa_moves(p: Position) -> Array[Position]:
 	assert(is_allowed_position(p) and get_piece(p) == SANTA)
 	return available_moves(p, true)
 
-func available_santa_kills(p: Position) -> Array:
+func available_santa_kills(p: Position) -> Array[Position]:
 	var kills = []
 	for np in neighbor_positions(p, true):
 		if get_piece(np) != TREE:
@@ -81,7 +82,7 @@ func available_santa_kills(p: Position) -> Array:
 			kills.append([op.x, op.y])
 	return kills
 
-func available_tree_moves(p: Position) -> Array:
+func available_tree_moves(p: Position) -> Array[Position]:
 	assert(is_allowed_position(p) and get_piece(p) == TREE)
 	return available_moves(p, false)
 
@@ -115,6 +116,3 @@ func move(from: Position, to: Position) -> bool:
 			return true
 
 	return false
-
-func _ready() -> void:
-	pass

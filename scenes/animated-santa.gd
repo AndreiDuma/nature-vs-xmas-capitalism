@@ -1,4 +1,5 @@
 extends Node2D
+class_name Santa
 
 @onready var _santa = $AnimatedSprite2D
 
