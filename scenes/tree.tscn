@@ -1,19 +1,67 @@
-[gd_scene load_steps=7 format=3 uid="uid://rd2s0sy8f0sv"]
+[gd_scene load_steps=14 format=3 uid="uid://rd2s0sy8f0sv"]
 
 [ext_resource type="Script" uid="uid://4334xqf5hbit" path="res://scripts/tree.gd" id="1_viusy"]
 [ext_resource type="PackedScene" uid="uid://ltcxa74831fr" path="res://scenes/halo.tscn" id="1_vplca"]
 [ext_resource type="Texture2D" uid="uid://cdg13ulq8h8ur" path="res://assets/sprites/very-snowy-tree.png" id="1_ypl48"]
+[ext_resource type="Texture2D" uid="uid://cu60wdxfpnvok" path="res://assets/sprites/very-snowy-tree-falling.png" id="3_ake3r"]
 [ext_resource type="Texture2D" uid="uid://dyguwjrax46u0" path="res://assets/sprites/decorated-tree.png" id="3_qd6xs"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_18mvg"]
+atlas = ExtResource("3_ake3r")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dmmp0"]
+atlas = ExtResource("3_ake3r")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m26wl"]
+atlas = ExtResource("3_ake3r")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5yujg"]
+atlas = ExtResource("3_ake3r")
+region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ake3r"]
 atlas = ExtResource("3_qd6xs")
 region = Rect2(0, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7adx"]
+atlas = ExtResource("3_qd6xs")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xprpn"]
+atlas = ExtResource("3_qd6xs")
+region = Rect2(64, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_8qw6h"]
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_18mvg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dmmp0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m26wl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5yujg")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_ake3r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7adx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xprpn")
 }],
 "loop": true,
 "name": &"decorated",
@@ -38,4 +86,6 @@ position = Vector2(0, -2)
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_8qw6h")
-animation = &"snowy"
+animation = &"decorated"
+frame = 2
+frame_progress = 0.26837733
