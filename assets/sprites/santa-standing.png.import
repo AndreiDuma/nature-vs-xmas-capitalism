@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c0xulpwp564vf"
-path="res://.godot/imported/real-santa-standing.png-f21063573bd96c800223b8f6e3b889a7.ctex"
+uid="uid://ns5ii2h53e8f"
+path="res://.godot/imported/santa-standing.png-10467113941bf6dec2da34d9f967101a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/real-santa-standing.png"
-dest_files=["res://.godot/imported/real-santa-standing.png-f21063573bd96c800223b8f6e3b889a7.ctex"]
+source_file="res://assets/sprites/santa-standing.png"
+dest_files=["res://.godot/imported/santa-standing.png-10467113941bf6dec2da34d9f967101a.ctex"]
 
 [params]
 
