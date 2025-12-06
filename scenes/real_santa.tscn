@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bhr8dqjfkavad"]
+
+[ext_resource type="Texture2D" uid="uid://dhf0wdb0oosk3" path="res://assets/sprites/real-santa.png" id="1_68akc"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fm1lf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_68akc")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="RealSanta" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_fm1lf")
