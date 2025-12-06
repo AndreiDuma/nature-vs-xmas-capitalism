@@ -1,8 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://cufix2v26b4kl"]
+[gd_scene load_steps=3 format=3 uid="uid://rd2s0sy8f0sv"]
 
-[ext_resource type="Texture2D" uid="uid://cavxkkg15fyyb" path="res://assets/sprites/tree.png" id="1_avsvi"]
+[ext_resource type="Texture2D" uid="uid://cdg13ulq8h8ur" path="res://assets/sprites/very-snowy-tree.png" id="1_ypl48"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8qw6h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ypl48")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Tree" type="Node2D"]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_avsvi")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_8qw6h")

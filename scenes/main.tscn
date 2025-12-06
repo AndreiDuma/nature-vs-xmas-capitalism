@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bnqn5ryjgm6gj"]
+[gd_scene load_steps=5 format=3 uid="uid://bnqn5ryjgm6gj"]
 
 [ext_resource type="PackedScene" uid="uid://dlhyfw5yggq1d" path="res://scenes/board.tscn" id="1_o5qli"]
-[ext_resource type="PackedScene" uid="uid://bhr8dqjfkavad" path="res://scenes/real_santa.tscn" id="4_jyhfs"]
-[ext_resource type="PackedScene" path="res://scenes/real_tree.tscn" id="4_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://ltcxa74831fr" path="res://scenes/halo.tscn" id="3_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://rd2s0sy8f0sv" path="res://scenes/tree.tscn" id="3_sugp2"]
+[ext_resource type="PackedScene" uid="uid://bhr8dqjfkavad" path="res://scenes/santa.tscn" id="4_jyhfs"]
 
 [node name="Main" type="Node2D"]
 
@@ -11,26 +12,13 @@ zoom = Vector2(3, 3)
 
 [node name="Board" parent="." instance=ExtResource("1_o5qli")]
 
-[node name="RealSanta" parent="." instance=ExtResource("4_jyhfs")]
+[node name="Santa" parent="." instance=ExtResource("4_jyhfs")]
 position = Vector2(0, -192)
-scale = Vector2(3, 3)
 
-[node name="RealTree" parent="." instance=ExtResource("4_tbgi4")]
-position = Vector2(0, 96)
-scale = Vector2(3, 3)
+[node name="SelectionHalo" parent="Santa" instance=ExtResource("3_jyhfs")]
 
-[node name="RealTree2" parent="." instance=ExtResource("4_tbgi4")]
-position = Vector2(96, -96)
-scale = Vector2(3, 3)
+[node name="Tree" parent="." instance=ExtResource("3_sugp2")]
+position = Vector2(96, 0)
 
-[node name="RealTree3" parent="." instance=ExtResource("4_tbgi4")]
+[node name="Tree2" parent="." instance=ExtResource("3_sugp2")]
 position = Vector2(0, -96)
-scale = Vector2(3, 3)
-
-[node name="RealTree4" parent="." instance=ExtResource("4_tbgi4")]
-position = Vector2(96, -192)
-scale = Vector2(3, 3)
-
-[node name="RealTree5" parent="." instance=ExtResource("4_tbgi4")]
-position = Vector2(96, -288)
-scale = Vector2(3, 3)

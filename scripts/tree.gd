@@ -1,4 +1,5 @@
 extends Node2D
+class_name SnowyTree
 
 @onready var _tree = $AnimatedSprite2D
 
