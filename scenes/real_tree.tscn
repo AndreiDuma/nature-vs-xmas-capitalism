@@ -1,19 +1,39 @@
-[gd_scene load_steps=3 format=3 uid="uid://bwtgqglsxr7rg"]
+[gd_scene load_steps=7 format=3 uid="uid://bwtgqglsxr7rg"]
 
+[ext_resource type="Texture2D" uid="uid://dyguwjrax46u0" path="res://assets/sprites/decorated-tree.png" id="1_8qw6h"]
+[ext_resource type="Script" uid="uid://4334xqf5hbit" path="res://scenes/tree.gd" id="1_wakp8"]
 [ext_resource type="Texture2D" uid="uid://cdg13ulq8h8ur" path="res://assets/sprites/very-snowy-tree.png" id="1_ypl48"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wakp8"]
+atlas = ExtResource("1_8qw6h")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8qw6h"]
+atlas = ExtResource("1_ypl48")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8qw6h"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_ypl48")
+"texture": SubResource("AtlasTexture_wakp8")
 }],
 "loop": true,
-"name": &"default",
+"name": &"decorated-stand",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8qw6h")
+}],
+"loop": true,
+"name": &"snowy-stand",
 "speed": 5.0
 }]
 
 [node name="RealTree" type="Node2D"]
+script = ExtResource("1_wakp8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_8qw6h")
+animation = &"decorated-stand"

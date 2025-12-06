@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://v5ft0vg3eqys"
-path="res://.godot/imported/not-snowy-tree.png-da67602ecac1cbcc4a7a4d1cea4fe0ef.ctex"
+uid="uid://dyguwjrax46u0"
+path="res://.godot/imported/decorated-tree.png-1a07d233187d26b31116c9622e9ca55a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/not-snowy-tree.png"
-dest_files=["res://.godot/imported/not-snowy-tree.png-da67602ecac1cbcc4a7a4d1cea4fe0ef.ctex"]
+source_file="res://assets/sprites/decorated-tree.png"
+dest_files=["res://.godot/imported/decorated-tree.png-1a07d233187d26b31116c9622e9ca55a.ctex"]
 
 [params]
 

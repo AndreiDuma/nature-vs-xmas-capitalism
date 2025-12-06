@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bd0q1goqf3dh3" path="res://assets/sprites/very-snowy-tree-layers.png" id="1_yqi71"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_d3ugd"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_yqi71"]
 atlas = ExtResource("1_yqi71")
 region = Rect2(0, 0, 32, 32)
 
@@ -10,7 +10,7 @@ region = Rect2(0, 0, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_d3ugd")
+"texture": SubResource("AtlasTexture_yqi71")
 }],
 "loop": true,
 "name": &"default",
