@@ -30,12 +30,12 @@ animations = [{
 
 [node name="Tree" type="Node2D"]
 script = ExtResource("1_viusy")
-state = 1
 
-[node name="SelectionHalo" parent="." instance=ExtResource("1_vplca")]
+[node name="Halo" parent="." instance=ExtResource("1_vplca")]
+visible = false
 position = Vector2(0, -2)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_8qw6h")
 animation = &"snowy"

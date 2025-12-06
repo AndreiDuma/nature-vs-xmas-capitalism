@@ -1,14 +1,16 @@
 extends Node2D
 class_name Santa
 
-@onready var _santa = $AnimatedSprite2D
+enum State {STANDING, CHOPPING}
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	_santa.play("stand")
+@export var state: State = State.STANDING
+@export var selected: bool = false
 
 func _process(_delta):
-	if Input.is_key_pressed(KEY_SPACE):
-		_santa.play("chop")
-	else:
-		_santa.play("stand")
+	match state:
+		State.STANDING:
+			$Sprite.play("stand")
+		State.CHOPPING:
+			$Sprite.play("chop")
+			
+	$Halo.visible = selected
