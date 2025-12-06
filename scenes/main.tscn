@@ -6,12 +6,21 @@
 
 [node name="Main" type="Node2D"]
 
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
+
 [node name="Board" parent="." instance=ExtResource("1_o5qli")]
 
 [node name="Santa" parent="." instance=ExtResource("2_0wfyh")]
 
 [node name="Tree" parent="." instance=ExtResource("3_sugp2")]
-position = Vector2(64, 64)
+position = Vector2(96, 96)
 
 [node name="Tree2" parent="." instance=ExtResource("3_sugp2")]
-position = Vector2(192, 64)
+position = Vector2(192, 96)
+
+[node name="Tree3" parent="." instance=ExtResource("3_sugp2")]
+position = Vector2(288, 96)
+
+[node name="Tree4" parent="." instance=ExtResource("3_sugp2")]
+position = Vector2(96, 192)
