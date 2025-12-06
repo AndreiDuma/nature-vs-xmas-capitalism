@@ -1,32 +1,35 @@
 extends Node2D
 
-const allowed_positions = [
-	[0, 0, 1, 1, 1, 0, 0],
-	[0, 0, 1, 1, 1, 0, 0],
-	[1, 1, 1, 1, 1, 1, 1],
-	[1, 1, 1, 1, 1, 1, 1],
-	[1, 1, 1, 1, 1, 1, 1],
-	[0, 0, 1, 1, 1, 0, 0],
-	[0, 0, 1, 1, 1, 0, 0],
-]
-
 enum {INVALID, EMPTY, SANTA, TREE}
 enum {I = INVALID, E = EMPTY, S = SANTA, T = TREE}
 
-var board = [
-	[I, I, E, E, T, I, I],
-	[I, I, E, S, T, I, I],
-	[E, E, E, T, T, E, E],
+const empty_board = [
+	[I, I, E, E, E, I, I],
+	[I, I, E, E, E, I, I],
+	[E, E, E, E, E, E, E],
+	[E, E, E, E, E, E, E],
+	[E, E, E, E, E, E, E],
+	[I, I, E, E, E, I, I],
+	[I, I, E, E, E, I, I],
+]
+
+const initial_board = [
+	[I, I, E, E, E, I, I],
+	[I, I, E, S, E, I, I],
+	[E, E, E, E, E, E, E],
 	[E, E, E, E, E, E, E],
 	[T, T, T, T, T, T, T],
 	[I, I, T, T, T, I, I],
 	[I, I, T, T, T, I, I],
 ]
 
+@onready
+var board = initial_board;
+
 static func is_allowed_position(x: int, y: int) -> bool:
 	if x < 0 || x > 6 || y < 0 || y > 6:
 		return false
-	return allowed_positions[x][y] == 1
+	return empty_board[x][y] == EMPTY
 
 static func neighbor_positions(x: int, y: int, include_diagonals: bool) -> Array:
 	assert(is_allowed_position(x, y))
@@ -112,6 +115,7 @@ func _ready() -> void:
 	#print(neighbor_positions(2, 2, false))
 	#print(available_moves(1, 3, true))
 	#print(available_moves(6, 4, true))
+	#print(available_tree_moves(2, 4))
 	print(available_santa_moves(1, 3))
 	print(available_santa_kills(1, 3))
 	print(move(1, 3, 3, 4))
