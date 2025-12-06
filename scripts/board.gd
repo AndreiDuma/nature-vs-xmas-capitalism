@@ -1,24 +1,21 @@
 extends Node2D
 
-const GRID_UNIT_SIZE = 96
-const UNIT_X := Vector2i.DOWN * GRID_UNIT_SIZE
-const UNIT_Y := Vector2i.RIGHT * GRID_UNIT_SIZE
+const BOARD_UNIT_SIZE = 96
 
 var board = Board.new()
-var nodes = []
+var santa: Santa = null
+var trees = []
 
-#func _ready() -> void:
-	#for i in range(board.SIZE):
-		#nodes.append([])
-		#for j in range(board.SIZE):
-			#var node = null
-			#var p = Position.new(i, j)
-			#if not Board.is_allowed_position(p):
-				#continue
-			#var piece = board.get_piece(p)
-			#if piece == Board.SANTA:
-				#node = Santa.new()
-			#if piece == Board.TREE:
-				#node = SnowyTree.new()
-			#self.add_child(node)
-			#nodes[i].append(node)
+func to_transform(p: Position) -> Vector2:
+	return BOARD_UNIT_SIZE * Vector2(p.y - 3, p.x - 3)
+
+func _ready() -> void:
+	santa = preload("res://scenes/santa.tscn").instantiate()
+	santa.hide()
+	add_child(santa)
+	santa.translate(to_transform(board.get_santa_position()))
+	santa.show()
+
+#func _process(_delta: float) -> void:
+	##santa.transform = to_transform(board.get_santa_position())
+	#santa.translate(to_transform(board.get_santa_position()))

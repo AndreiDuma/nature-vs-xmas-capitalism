@@ -59,6 +59,19 @@ func set_piece(p: Position, piece: Piece):
 	assert(is_allowed_position(p))
 	board[p.x][p.y] = piece
 
+func get_santa_position() -> Position:
+	var santa_position = null
+	for x in range(SIZE):
+		for y in range(SIZE):
+			var p = Position.new(x, y)
+			if not is_allowed_position(p):
+				continue
+			if get_piece(p) == SANTA:
+				assert(santa_position == null)
+				santa_position = p
+	assert(santa_position != null)
+	return santa_position
+
 func available_moves(p: Position, include_diagonals: bool) -> Array[Position]:
 	assert(is_allowed_position(p) and get_piece(p) in [SANTA, TREE])
 	return neighbor_positions(p, include_diagonals).filter(
