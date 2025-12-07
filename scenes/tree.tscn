@@ -81,6 +81,7 @@ animations = [{
 script = ExtResource("1_viusy")
 
 [node name="Halo" parent="." instance=ExtResource("1_vplca")]
+visible = false
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)

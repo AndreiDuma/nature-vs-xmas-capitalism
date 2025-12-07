@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cn1xveyq1qhw3" path="res://scenes/clickable.tscn" id="3_lyatw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_q5shd"]
-radius = 17.0
+radius = 24.0
 
 [node name="Restart" type="Node2D"]
 script = ExtResource("1_7dg1w")
@@ -20,3 +20,5 @@ texture = ExtResource("1_mi6dp")
 shape = SubResource("CircleShape2D_q5shd")
 
 [connection signal="clicked" from="Clickable" to="." method="_on_click"]
+[connection signal="mouse_entered" from="Clickable" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Clickable" to="." method="_on_mouse_exited"]

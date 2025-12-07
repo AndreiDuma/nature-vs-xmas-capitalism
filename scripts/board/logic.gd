@@ -22,25 +22,6 @@ const _valid_board_positions = [
 	[I, I, V, V, V, I, I],
 ]
 
-#const _initial_board_almost_santa_win = [
-	#[I, I, E, E, E, I, I],
-	#[I, I, E, E, E, I, I],
-	#[E, E, E, E, E, E, E],
-	#[E, E, E, E, E, E, E],
-	#[E, E, E, E, E, E, E],
-	#[I, I, E, T, E, I, I],
-	#[I, I, E, S, E, I, I],
-#]
-#var _initial_board_almost_trees_win = [
-	#[I, I, E, E, E, I, I],
-	#[I, I, E, E, E, I, I],
-	#[E, E, E, E, E, E, E],
-	#[E, E, E, E, E, E, E],
-	#[T, T, T, T, T, T, T],
-	#[I, I, T, T, T, I, I],
-	#[I, I, E, S, T, I, I],
-#]
-
 const initial_board = [
 	[I, I, E, E, E, I, I],
 	[I, I, E, S, E, I, I],
@@ -50,6 +31,26 @@ const initial_board = [
 	[I, I, T, T, T, I, I],
 	[I, I, T, T, T, I, I],
 ]
+
+#const _initial_board_almost_santa_win = [
+	#[I, I, E, E, E, I, I],
+	#[I, I, E, E, E, I, I],
+	#[E, E, E, E, E, E, E],
+	#[E, E, E, E, E, E, E],
+	#[E, E, E, E, E, E, E],
+	#[I, I, E, T, E, I, I],
+	#[I, I, E, S, E, I, I],
+#]
+
+#var _initial_board_almost_trees_win = [
+	#[I, I, E, E, E, I, I],
+	#[I, I, E, E, E, I, I],
+	#[E, E, E, E, E, E, E],
+	#[E, E, E, E, E, E, E],
+	#[T, T, T, T, T, T, T],
+	#[I, I, T, T, T, I, I],
+	#[I, I, E, S, T, I, I],
+#]
 var _board = initial_board.duplicate_deep()
 
 const initial_game_state = GameState.TURN_ANY
