@@ -12,9 +12,8 @@ func fade():
 	var tween = get_tree().create_tween()
 	tween.tween_property($Sprite, "modulate", Color.TRANSPARENT, 1.0)
 
-func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event.is_pressed():
-		clicked.emit()
+func _on_click() -> void:
+	clicked.emit()
 
 func _process(_delta):
 	match state:

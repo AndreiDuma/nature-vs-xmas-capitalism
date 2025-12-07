@@ -1,14 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://31ly61y8coh1"]
+[gd_scene load_steps=4 format=3 uid="uid://31ly61y8coh1"]
 
 [ext_resource type="Script" uid="uid://depokhlkv6bmd" path="res://scripts/square.gd" id="1_rb13l"]
+[ext_resource type="PackedScene" uid="uid://cn1xveyq1qhw3" path="res://scenes/clickable.tscn" id="2_qmd2u"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yaqdw"]
 radius = 24.0
 
-[node name="Square" type="Area2D"]
+[node name="Square" type="Node2D"]
 script = ExtResource("1_rb13l")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Clickable" parent="." instance=ExtResource("2_qmd2u")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Clickable"]
 shape = SubResource("CircleShape2D_yaqdw")
 
-[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="clicked" from="Clickable" to="." method="_on_click"]
