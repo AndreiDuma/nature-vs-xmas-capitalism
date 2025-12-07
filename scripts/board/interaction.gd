@@ -111,8 +111,8 @@ func _move_tree(from: Position, to: Position) -> void:
 
 func _kill_tree(p: Position) -> void:
 	var tree = _get_tree(p)
-	#tree.clicked.disconnect(_on_tree_clicked)
-	tree.queue_free()
+	tree.clicked.disconnect(_on_tree_clicked)
+	tree.die()
 	_set_tree(p, null)
 
 func _on_tree_clicked(p: Position) -> void:

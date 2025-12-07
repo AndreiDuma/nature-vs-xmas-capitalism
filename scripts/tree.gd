@@ -1,21 +1,17 @@
 extends Node2D
 class_name XmaxTree
 
-enum State {SNOWY, FALLING, DECORATED, DEAD}
+enum State {SNOWY, FALLING, DEAD, DECORATED}
 
 @export var state: State = State.SNOWY
 @export var selected: bool = false
 
 signal clicked
 
-func fade():
-	var tween = get_tree().create_tween()
-	tween.tween_property($Sprite, "modulate", Color.TRANSPARENT, 1.0)
+func die():
+	state = State.FALLING
 
-func _on_click() -> void:
-	clicked.emit()
-
-func _process(_delta):
+func _update_animation():
 	match state:
 		State.SNOWY:
 			$Sprite.play("snowy")
@@ -23,9 +19,19 @@ func _process(_delta):
 			$Sprite.play("falling", 0.75)
 			if $Sprite.frame == 3:
 				state = State.DEAD
+		State.DEAD:
+			var tween = get_tree().create_tween()
+			tween.tween_property($Sprite, "modulate", Color.TRANSPARENT, 1.0)
+			tween.tween_callback(queue_free)
 		State.DECORATED:
 			$Sprite.play("decorated")
-		State.DEAD:
-			fade()
-	
+
+func _update_halo():
 	$Halo.visible = selected
+
+func _on_click() -> void:
+	clicked.emit()
+
+func _process(_delta):
+	_update_animation()
+	_update_halo()
