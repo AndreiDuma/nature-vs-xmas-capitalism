@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dlhyfw5yggq1d"]
+[gd_scene load_steps=4 format=3 uid="uid://dlhyfw5yggq1d"]
 
 [ext_resource type="Texture2D" uid="uid://bga8dn2gybjyt" path="res://assets/sprites/board.png" id="1_bw3vb"]
 [ext_resource type="Script" uid="uid://dhtjk3kivkp42" path="res://scripts/board/interaction.gd" id="1_tx6nw"]
+[ext_resource type="PackedScene" uid="uid://rd2s0sy8f0sv" path="res://scenes/tree.tscn" id="3_nglv8"]
 
 [node name="Board" type="Node2D"]
 script = ExtResource("1_tx6nw")
@@ -13,3 +14,70 @@ texture = ExtResource("1_bw3vb")
 [node name="Squares" type="Node2D" parent="."]
 
 [node name="Trees" type="Node2D" parent="."]
+
+[node name="Decorated" type="Node2D" parent="."]
+
+[node name="Tree-1" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(168, -256)
+state = 3
+
+[node name="Tree-2" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(352, -200)
+state = 3
+
+[node name="Tree-3" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(384, -30)
+state = 3
+
+[node name="Tree-4" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(-336, -160)
+state = 3
+
+[node name="Tree-5" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(-312, 198)
+state = 3
+
+[node name="Tree-6" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(-176, -192)
+state = 3
+
+[node name="Tree-7" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(216, -168)
+state = 3
+
+[node name="Tree-8" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(296, 248)
+state = 3
+
+[node name="Tree-9" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(192, 198)
+state = 3
+
+[node name="Tree-10" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(352, 144)
+state = 3
+
+[node name="Tree-11" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(-384, 64)
+state = 3
+
+[node name="Tree-12" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(-168, 246)
+state = 3
+
+[node name="Tree-13" parent="Decorated" instance=ExtResource("3_nglv8")]
+visible = false
+position = Vector2(-256, -256)
+state = 3
