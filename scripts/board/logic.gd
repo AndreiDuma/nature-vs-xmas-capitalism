@@ -1,10 +1,16 @@
 extends RefCounted
 class_name Logic
 
-const SIZE = 7
-
 enum {INVALID, VALID}
 enum {I = INVALID, V = VALID}
+
+enum Piece {EMPTY, SANTA, TREE}
+enum {EMPTY = Piece.EMPTY, SANTA = Piece.SANTA, TREE = Piece.TREE}
+enum {E = EMPTY, S = SANTA, T = TREE}
+
+enum GameState {TURN_SANTA, TURN_TREES, TURN_ANY, WIN_SANTA, WIN_TREES}
+
+const BOARD_SIZE = 7
 
 const _valid_board_positions = [
 	[I, I, V, V, V, I, I],
@@ -16,11 +22,26 @@ const _valid_board_positions = [
 	[I, I, V, V, V, I, I],
 ]
 
-enum Piece {EMPTY, SANTA, TREE}
-enum {EMPTY = Piece.EMPTY, SANTA = Piece.SANTA, TREE = Piece.TREE}
-enum {E = EMPTY, S = SANTA, T = TREE}
+#const _initial_board_almost_santa_win = [
+	#[I, I, E, E, E, I, I],
+	#[I, I, E, E, E, I, I],
+	#[E, E, E, E, E, E, E],
+	#[E, E, E, E, E, E, E],
+	#[E, E, E, E, E, E, E],
+	#[I, I, E, T, E, I, I],
+	#[I, I, E, S, E, I, I],
+#]
+#var _initial_board_almost_trees_win = [
+	#[I, I, E, E, E, I, I],
+	#[I, I, E, E, E, I, I],
+	#[E, E, E, E, E, E, E],
+	#[E, E, E, E, E, E, E],
+	#[T, T, T, T, T, T, T],
+	#[I, I, T, T, T, I, I],
+	#[I, I, E, S, T, I, I],
+#]
 
-var _board = [
+const initial_board = [
 	[I, I, E, E, E, I, I],
 	[I, I, E, S, E, I, I],
 	[E, E, E, E, E, E, E],
@@ -29,10 +50,10 @@ var _board = [
 	[I, I, T, T, T, I, I],
 	[I, I, T, T, T, I, I],
 ]
+var _board = initial_board.duplicate_deep()
 
-enum GameState {TURN_SANTA, TURN_TREES, TURN_ANY, GAME_OVER}
-
-var game_state := GameState.TURN_ANY
+const initial_game_state = GameState.TURN_ANY
+var game_state := initial_game_state
 
 static func _is_valid_position(p: Position) -> bool:
 	if p.x < 0 || p.x > 6 || p.y < 0 || p.y > 6:
@@ -75,8 +96,8 @@ func _available_moves(p: Position, include_diagonals: bool) -> Array[Position]:
 
 static func valid_positions() -> Array[Position]:
 	var ps: Array[Position] = []
-	for i in range(Logic.SIZE):
-		for j in range(Logic.SIZE):
+	for i in range(Logic.BOARD_SIZE):
+		for j in range(Logic.BOARD_SIZE):
 			var p = Position.new(i, j)
 			if Logic._is_valid_position(p):
 				ps.append(p)
@@ -88,8 +109,8 @@ static func valid_positions() -> Array[Position]:
 
 func get_santa_position() -> Position:
 	var santa_position = null
-	for x in range(SIZE):
-		for y in range(SIZE):
+	for x in range(BOARD_SIZE):
+		for y in range(BOARD_SIZE):
 			var p = Position.new(x, y)
 			if not _is_valid_position(p):
 				continue
@@ -150,6 +171,8 @@ func santa_kill_and_move(to: Position) -> Position:
 		_set_piece(victim, Piece.EMPTY)
 		if available_santa_kills() == []:
 			game_state = GameState.TURN_TREES
+		elif get_tree_positions() == []:
+			game_state = GameState.WIN_SANTA
 		else:
 			game_state = GameState.TURN_ANY
 		return victim
@@ -160,14 +183,17 @@ func santa_kill_and_move(to: Position) -> Position:
 func can_santa_play() -> bool:
 	return game_state in [GameState.TURN_SANTA, GameState.TURN_ANY]
 
+func did_santa_win() -> bool:
+	return get_tree_positions() == []
+
 #
 # Trees
 #
 
 func get_tree_positions() -> Array[Position]:
 	var ps: Array[Position] = []
-	for x in range(SIZE):
-		for y in range(SIZE):
+	for x in range(BOARD_SIZE):
+		for y in range(BOARD_SIZE):
 			var p = Position.new(x, y)
 			if not _is_valid_position(p):
 				continue
@@ -191,7 +217,10 @@ func tree_move(from: Position, to: Position) -> bool:
 		# Successful move.
 		_set_piece(from, Piece.EMPTY)
 		_set_piece(to, Piece.TREE)
-		game_state = GameState.TURN_SANTA
+		if did_trees_win():
+			game_state = GameState.WIN_TREES
+		else:
+			game_state = GameState.TURN_SANTA
 		return true
 
 	# Impossible move.
@@ -200,38 +229,16 @@ func tree_move(from: Position, to: Position) -> bool:
 func can_trees_play() -> bool:
 	return game_state in [GameState.TURN_TREES, GameState.TURN_ANY]
 
+func did_trees_win() -> bool:
+	return available_santa_moves() == [] and available_santa_kills() == []
+
 #
-# Random
+# Game state
 #
 
-# TODO: Delete once definitely not needed.
-func _move(from: Position, to: Position) -> bool:
-	assert(_is_valid_position(from))
-	assert(_is_valid_position(to))
+func is_game_over() -> bool:
+	return game_state in [GameState.WIN_SANTA, GameState.WIN_TREES]
 
-	if _get_piece(from) == SANTA:
-		if to.in_array(available_santa_moves()):
-			_set_piece(from, Piece.EMPTY)
-			_set_piece(to, Piece.SANTA)
-			# TODO: Consider emitting a signal `santa_moved`.
-			return true
-		elif to.in_array(available_santa_kills()):
-			_set_piece(from, Piece.EMPTY)
-			_set_piece(to, Piece.SANTA)
-			@warning_ignore("integer_division")
-			var t = Position.new(((from.x + to.x) / 2), (from.y + to.y) / 2)
-			assert(_get_piece(t) == TREE)
-			_set_piece(t, Piece.EMPTY)
-			# TODO: Consider emitting a signal `tree_killed`.
-			return true
-		else:
-			return false
-
-	if _get_piece(from) == TREE:
-		if to.in_array(available_tree_moves(from)):
-			_set_piece(from, Piece.EMPTY)
-			_set_piece(to, Piece.TREE)
-			# TODO: Consider emitting a signal `tree_moved`.
-			return true
-
-	return false
+func restart_game():
+	_board = initial_board.duplicate_deep()
+	game_state = initial_game_state

@@ -16,7 +16,7 @@ zoom = Vector2(1.8, 1.8)
 [node name="Restart" parent="." instance=ExtResource("1_0wfyh")]
 position = Vector2(-408, -408)
 
-[node name="MusicLoop" type="AudioStreamPlayer2D" parent="."]
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_jyhfs")
 autoplay = true
 parameters/looping = true

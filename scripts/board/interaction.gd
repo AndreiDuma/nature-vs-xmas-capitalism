@@ -1,5 +1,5 @@
 extends Node2D
-class_name Interaction
+class_name Board
 
 const BOARD_UNIT_SIZE = 96
 
@@ -14,10 +14,10 @@ var _tree_selected: Position = null
 
 func _make_board(value = null) -> Array[Array]:
 	var _board: Array[Array] = []
-	_board.resize(Logic.SIZE)
-	for i in range(Logic.SIZE):
+	_board.resize(Logic.BOARD_SIZE)
+	for i in range(Logic.BOARD_SIZE):
 		_board[i] = []
-		_board[i].resize(Logic.SIZE)
+		_board[i].resize(Logic.BOARD_SIZE)
 		_board[i].fill(value)
 	return _board
 
@@ -96,6 +96,8 @@ func _instantiate_trees() -> void:
 		_set_tree(p, tree)
 
 func _select_tree(p: Position) -> void:
+	if _logic.is_game_over():
+		return
 	_set_selected(_get_tree(p))
 	_tree_selected = p
 
@@ -135,6 +137,9 @@ func _update_santa_position() -> void:
 	_santa.position = _to_vector(_logic.get_santa_position())
 
 func _select_santa() -> void:
+	print(_logic.game_state)
+	if _logic.is_game_over():
+		return
 	_set_selected(_santa)
 	_santa_selected = true
 
@@ -151,6 +156,29 @@ func _on_santa_clicked() -> void:
 		_select_santa()
 
 #
+# Game
+#
+
+func restart_game() -> void:
+	# Remove trees.
+	for tp in _logic.get_tree_positions():
+		_get_tree(tp).queue_free()
+	_trees = _make_board()
+
+	# Remove Santa.
+	_santa.queue_free()
+	_santa = null
+
+	# Clear selection.
+	_selected = null
+	_santa_selected = false
+	_tree_selected = null
+
+	# Restart logic game and reinitialize scene.
+	_logic.restart_game()
+	_ready()
+
+#
 # Godot overrides
 #
 
@@ -160,7 +188,4 @@ func _ready() -> void:
 	_instantiate_santa()
 
 func _process(_delta: float) -> void:
-	if Input.is_key_pressed(KEY_ENTER):
-		var from = Position.new(4, 0)
-		var to = Position.new(3, 0)
-		_logic.tree_move(from, to)
+	pass
