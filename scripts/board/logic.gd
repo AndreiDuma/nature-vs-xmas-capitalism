@@ -127,6 +127,7 @@ func santa_move(to: Position) -> bool:
 		# Successful Santa move.
 		_set_piece(from, Piece.EMPTY)
 		_set_piece(to, Piece.SANTA)
+		game_state = GameState.TURN_TREES
 		return true
 
 	# Impossible move
@@ -147,6 +148,10 @@ func santa_kill_and_move(to: Position) -> Position:
 		var victim = Position.new(((from.x + to.x) / 2), (from.y + to.y) / 2)
 		assert(_get_piece(victim) == TREE)
 		_set_piece(victim, Piece.EMPTY)
+		if available_santa_kills() == []:
+			game_state = GameState.TURN_TREES
+		else:
+			game_state = GameState.TURN_ANY
 		return victim
 
 	# Impossible kill & move.
@@ -186,6 +191,7 @@ func tree_move(from: Position, to: Position) -> bool:
 		# Successful move.
 		_set_piece(from, Piece.EMPTY)
 		_set_piece(to, Piece.TREE)
+		game_state = GameState.TURN_SANTA
 		return true
 
 	# Impossible move.
