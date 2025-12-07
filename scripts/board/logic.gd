@@ -6,7 +6,7 @@ const SIZE = 7
 enum {INVALID, VALID}
 enum {I = INVALID, V = VALID}
 
-const empty_board = [
+const _valid_board_positions = [
 	[I, I, V, V, V, I, I],
 	[I, I, V, V, V, I, I],
 	[V, V, V, V, V, V, V],
@@ -16,13 +16,27 @@ const empty_board = [
 	[I, I, V, V, V, I, I],
 ]
 
-static func is_allowed_position(p: Position) -> bool:
+enum Piece {EMPTY, SANTA, TREE}
+enum {EMPTY = Piece.EMPTY, SANTA = Piece.SANTA, TREE = Piece.TREE}
+enum {E = EMPTY, S = SANTA, T = TREE}
+
+var _board = [
+	[I, I, E, E, E, I, I],
+	[I, I, E, S, E, I, I],
+	[E, E, E, E, E, E, E],
+	[E, E, E, E, E, E, E],
+	[T, T, T, T, T, T, T],
+	[I, I, T, T, T, I, I],
+	[I, I, T, T, T, I, I],
+]
+
+static func _is_valid_position(p: Position) -> bool:
 	if p.x < 0 || p.x > 6 || p.y < 0 || p.y > 6:
 		return false
-	return empty_board[p.x][p.y] == VALID
+	return _valid_board_positions[p.x][p.y] == VALID
 
-static func neighbor_positions(p: Position, include_diagonals: bool) -> Array[Position]:
-	assert(is_allowed_position(p))
+static func _neighbor_positions(p: Position, include_diagonals: bool) -> Array[Position]:
+	assert(_is_valid_position(p))
 	var candidates: Array[Position] = []
 	for d in [
 		Position.new(-1, 0),
@@ -35,38 +49,30 @@ static func neighbor_positions(p: Position, include_diagonals: bool) -> Array[Po
 		for dx in [-1, 1]:
 			for dy in [-1, 1]:
 				candidates.append(Position.new(p.x + dx, p.y + dy))
-	return candidates.filter(func (cp): return is_allowed_position(cp))
+	return candidates.filter(_is_valid_position)
 
-enum Piece {EMPTY, SANTA, TREE}
-enum {EMPTY = Piece.EMPTY, SANTA = Piece.SANTA, TREE = Piece.TREE}
-enum {E = EMPTY, S = SANTA, T = TREE}
+func _get_piece(p: Position) -> Piece:
+	assert(_is_valid_position(p))
+	return _board[p.x][p.y]
 
-var board = [
-	[I, I, E, E, E, I, I],
-	[I, I, E, S, E, I, I],
-	[E, E, E, E, E, E, E],
-	[E, E, E, E, E, E, E],
-	[T, T, T, T, T, T, T],
-	[I, I, T, T, T, I, I],
-	[I, I, T, T, T, I, I],
-]
+func _set_piece(p: Position, piece: Piece):
+	assert(_is_valid_position(p))
+	_board[p.x][p.y] = piece
 
-func get_piece(p: Position) -> Piece:
-	assert(is_allowed_position(p))
-	return board[p.x][p.y]
-
-func set_piece(p: Position, piece: Piece):
-	assert(is_allowed_position(p))
-	board[p.x][p.y] = piece
+func _available_moves(p: Position, include_diagonals: bool) -> Array[Position]:
+	assert(_is_valid_position(p) and _get_piece(p) in [SANTA, TREE])
+	return _neighbor_positions(p, include_diagonals).filter(
+		func (np): return _get_piece(np) == EMPTY
+	)
 
 func get_santa_position() -> Position:
 	var santa_position = null
 	for x in range(SIZE):
 		for y in range(SIZE):
 			var p = Position.new(x, y)
-			if not is_allowed_position(p):
+			if not _is_valid_position(p):
 				continue
-			if get_piece(p) == SANTA:
+			if _get_piece(p) == SANTA:
 				assert(santa_position == null)
 				santa_position = p
 	assert(santa_position != null)
@@ -77,65 +83,104 @@ func get_tree_positions() -> Array[Position]:
 	for x in range(SIZE):
 		for y in range(SIZE):
 			var p = Position.new(x, y)
-			if not is_allowed_position(p):
+			if not _is_valid_position(p):
 				continue
-			if get_piece(p) == TREE:
+			if _get_piece(p) == TREE:
 				ps.append(p)
 	return ps
 
-func available_moves(p: Position, include_diagonals: bool) -> Array[Position]:
-	assert(is_allowed_position(p) and get_piece(p) in [SANTA, TREE])
-	return neighbor_positions(p, include_diagonals).filter(
-		func (np): return get_piece(np) == EMPTY
-	)
+func available_santa_moves() -> Array[Position]:
+	return _available_moves(get_santa_position(), true)
 
-func available_santa_moves(p: Position) -> Array[Position]:
-	assert(is_allowed_position(p) and get_piece(p) == SANTA)
-	return available_moves(p, true)
-
-func available_santa_kills(p: Position) -> Array[Position]:
+func available_santa_kills() -> Array[Position]:
+	var sp = get_santa_position()
 	var kills: Array[Position] = []
-	for np in neighbor_positions(p, true):
-		if get_piece(np) != TREE:
+	for np in _neighbor_positions(sp, true):
+		if _get_piece(np) != TREE:
 			continue
-		var dp = Position.new(np.x - p.x, np.y - p.y)
+		var dp = Position.new(np.x - sp.x, np.y - sp.y)
 		var op = Position.new(np.x + dp.x, np.y + dp.y)
-		if not is_allowed_position(op):
+		if not _is_valid_position(op):
 			continue
-		if get_piece(op) == EMPTY:
+		if _get_piece(op) == EMPTY:
 			kills.append([op.x, op.y])
 	return kills
 
 func available_tree_moves(p: Position) -> Array[Position]:
-	assert(is_allowed_position(p) and get_piece(p) == TREE)
-	return available_moves(p, false)
+	assert(_is_valid_position(p) and _get_piece(p) == TREE)
+	return _available_moves(p, false)
 
-func move(from: Position, to: Position) -> bool:
-	assert(is_allowed_position(from))
-	assert(is_allowed_position(to))
+func santa_move(to: Position) -> bool:
+	assert(_is_valid_position(to))
+	var from = get_santa_position()
 
-	if get_piece(from) == SANTA:
-		if to.in_array(available_santa_moves(from)):
-			set_piece(from, Piece.EMPTY)
-			set_piece(to, Piece.SANTA)
+	if to.in_array(available_santa_moves()):
+		# Successful Santa move.
+		_set_piece(from, Piece.EMPTY)
+		_set_piece(to, Piece.SANTA)
+		return true
+
+	# Impossible move
+	return false
+
+func santa_kill_and_move(to: Position) -> bool:
+	assert(_is_valid_position(to))
+	var from = get_santa_position()
+
+	if to.in_array(available_santa_kills()):
+		# Successful kill & move.
+		_set_piece(from, Piece.EMPTY)
+		_set_piece(to, Piece.SANTA)
+		@warning_ignore("integer_division")
+		var t = Position.new(((from.x + to.x) / 2), (from.y + to.y) / 2)
+		assert(_get_piece(t) == TREE)
+		_set_piece(t, Piece.EMPTY)
+		return true
+
+	# Impossible kill & move.
+	return false
+
+func tree_move(from: Position, to: Position) -> bool:
+	assert(_is_valid_position(from))
+	assert(_is_valid_position(to))
+	assert(_get_piece(from) == TREE)
+
+	if to.in_array(available_tree_moves(from)):
+		# Successful move.
+		_set_piece(from, Piece.EMPTY)
+		_set_piece(to, Piece.TREE)
+		return true
+
+	# Impossible move.
+	return false
+
+# TODO: Delete once definitely not needed.
+func _move(from: Position, to: Position) -> bool:
+	assert(_is_valid_position(from))
+	assert(_is_valid_position(to))
+
+	if _get_piece(from) == SANTA:
+		if to.in_array(available_santa_moves()):
+			_set_piece(from, Piece.EMPTY)
+			_set_piece(to, Piece.SANTA)
 			# TODO: Consider emitting a signal `santa_moved`.
 			return true
-		elif to.in_array(available_santa_kills(from)):
-			set_piece(from, Piece.EMPTY)
-			set_piece(to, Piece.SANTA)
+		elif to.in_array(available_santa_kills()):
+			_set_piece(from, Piece.EMPTY)
+			_set_piece(to, Piece.SANTA)
 			@warning_ignore("integer_division")
 			var t = Position.new(((from.x + to.x) / 2), (from.y + to.y) / 2)
-			assert(get_piece(t) == TREE)
-			set_piece(t, Piece.EMPTY)
+			assert(_get_piece(t) == TREE)
+			_set_piece(t, Piece.EMPTY)
 			# TODO: Consider emitting a signal `tree_killed`.
 			return true
 		else:
 			return false
 
-	if get_piece(from) == TREE:
+	if _get_piece(from) == TREE:
 		if to.in_array(available_tree_moves(from)):
-			set_piece(from, Piece.EMPTY)
-			set_piece(to, Piece.TREE)
+			_set_piece(from, Piece.EMPTY)
+			_set_piece(to, Piece.TREE)
 			# TODO: Consider emitting a signal `tree_moved`.
 			return true
 

@@ -2,69 +2,76 @@ extends Node2D
 
 const BOARD_UNIT_SIZE = 96
 
-var board = Board.new()
-var santa: Santa = null
-var trees: Array[Array] = []
+var _board: Board = Board.new()
+var _santa: Santa = null
+var _trees: Array[Array] = []
 
-func from_logical(p: Position) -> Vector2:
+func _to_vector(p: Position) -> Vector2:
 	return BOARD_UNIT_SIZE * Vector2(p.y - 3, p.x - 3)
 
-func get_tree_node(p: Position) -> XmaxTree:
-	assert(board.get_piece(p) == Board.TREE)
-	return trees[p.x][p.y]
+### Santa ###
 
-func set_tree_node(p: Position, c: XmaxTree) -> void:
-	assert(board.get_piece(p) == Board.TREE)
-	trees[p.x][p.y] = c
+func _instantiate_santa() -> void:
+	_santa = preload("res://scenes/santa.tscn").instantiate()
+	_update_santa_position()
+	_santa.clicked.connect(_on_santa_clicked)
+	add_child(_santa)
 
-func instantiate_santa() -> void:
-	santa = preload("res://scenes/santa.tscn").instantiate()
-	update_santa_position()
-	santa.clicked.connect(_on_santa_clicked)
-	add_child(santa)
-
-func update_santa_position() -> void:
-	santa.position = from_logical(board.get_santa_position())
+func _update_santa_position() -> void:
+	_santa.position = _to_vector(_board.get_santa_position())
 
 func _on_santa_clicked() -> void:
 	print("santa clicked")
 
-func instantiate_trees() -> void:
-	trees.resize(Board.SIZE)
-	trees.fill([])
-	for ts in trees:
+### Trees ###
+
+func _get_tree(p: Position) -> XmaxTree:
+	assert(_board._get_piece(p) == Board.TREE)
+	return _trees[p.x][p.y]
+
+func _set_tree(p: Position, c: XmaxTree) -> void:
+	assert(_board._get_piece(p) == Board.TREE)
+	_trees[p.x][p.y] = c
+
+func _instantiate_trees() -> void:
+	_trees.resize(Board.SIZE)
+	_trees.fill([])
+	for ts in _trees:
 		ts.resize(Board.SIZE)
 		ts.fill(null)
 
 	for i in Board.SIZE:
 		for j in Board.SIZE:
 			var p = Position.new(i, j)
-			if not Board.is_allowed_position(p):
+			if not Board._is_valid_position(p):
 				continue
-			if board.get_piece(p) == Board.TREE:
+			if _board._get_piece(p) == Board.TREE:
 				var tree: XmaxTree = preload("res://scenes/tree.tscn").instantiate()
-				set_tree_node(p, tree)
-				update_tree_position(p)
+				_set_tree(p, tree)
+				_update_tree_position(p)
 				tree.clicked.connect(_on_tree_clicked)
 				add_child(tree)
 
-func update_tree_position(p: Position) -> void:
-	assert(board.get_piece(p) == Board.TREE)
-	get_tree_node(p).position = from_logical(p)
+func _update_tree_position(p: Position) -> void:
+	_get_tree(p).position = _to_vector(p)
 
 func _on_tree_clicked(tree: XmaxTree) -> void:
 	print("tree clicked: " + str(tree))
 
+#
+# Godot overrides
+#
+
 func _ready() -> void:
-	instantiate_santa()
-	instantiate_trees()
+	_instantiate_santa()
+	_instantiate_trees()
 
 func _process(_delta: float) -> void:
 	if Input.is_key_pressed(KEY_ENTER):
 		var from = Position.new(4, 0)
 		var to = Position.new(3, 0)
-		board.move(from, to)
+		_board.tree_move(from, to)
 
-	update_santa_position()
-	for tp in board.get_tree_positions():
-		update_tree_position(tp)
+	_update_santa_position()
+	for tp in _board.get_tree_positions():
+		_update_tree_position(tp)
