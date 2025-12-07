@@ -30,6 +30,10 @@ var _board = [
 	[I, I, T, T, T, I, I],
 ]
 
+enum GameState {TURN_SANTA, TURN_TREES, TURN_ANY, GAME_OVER}
+
+var game_state := GameState.TURN_TREES
+
 static func _is_valid_position(p: Position) -> bool:
 	if p.x < 0 || p.x > 6 || p.y < 0 || p.y > 6:
 		return false

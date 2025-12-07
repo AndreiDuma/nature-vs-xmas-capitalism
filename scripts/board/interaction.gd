@@ -8,17 +8,31 @@ var _logic: Logic = Logic.new()
 var _trees: Array[Array] = _make_board()
 var _santa: Santa = null
 
-func _to_vector(p: Position) -> Vector2:
-	return BOARD_UNIT_SIZE * Vector2(p.y - 3, p.x - 3)
+var _selected = null
 
 func _make_board(value = null) -> Array[Array]:
 	var _board: Array[Array] = []
 	_board.resize(Logic.SIZE)
-	_board.fill([])
-	for row in _board:
-		row.resize(Logic.SIZE)
-		row.fill(value)
+	for i in range(Logic.SIZE):
+		_board[i] = []
+		_board[i].resize(Logic.SIZE)
+		_board[i].fill(value)
 	return _board
+
+func _to_vector(p: Position) -> Vector2:
+	return BOARD_UNIT_SIZE * Vector2(p.y - 3, p.x - 3)
+
+func _set_selected(node) -> void:
+	assert(node != null)
+	node.selected = true
+	if _selected != null and node != _selected:
+		_selected.selected = false
+	_selected = node
+
+func clear_selected() -> void:
+	if _selected != null:
+		_selected.selected = false
+	_selected = null
 
 #
 # Squares
@@ -34,6 +48,7 @@ func _instantiate_squares() -> void:
 
 func _on_square_clicked(p: Position) -> void:
 	print("square clicked: " + str(p))
+	clear_selected()
 
 #
 # Trees
@@ -46,24 +61,18 @@ func _set_tree(p: Position, c: XmaxTree) -> void:
 	_trees[p.x][p.y] = c
 
 func _instantiate_trees() -> void:
-	for i in range(Logic.SIZE):
-		for j in range(Logic.SIZE):
-			var p = Position.new(i, j)
-			if not Logic._is_valid_position(p):
-				continue
-			if _logic._get_piece(p) == Logic.TREE:
-				var tree: XmaxTree = preload("res://scenes/tree.tscn").instantiate()
-				tree.name = "Tree %s" % p
-				_set_tree(p, tree)
-				_update_tree_position(p)
-				tree.clicked.connect(_on_tree_clicked.bind(p))
-				$Trees.add_child(tree)
-
-func _update_tree_position(p: Position) -> void:
-	_get_tree(p).position = _to_vector(p)
+	for p in _logic.get_tree_positions():
+		var tree: XmaxTree = preload("res://scenes/tree.tscn").instantiate()
+		tree.name = "Tree %s" % p
+		tree.position = _to_vector(p)
+		tree.clicked.connect(_on_tree_clicked.bind(p))
+		$Trees.add_child(tree)
+		_set_tree(p, tree)
 
 func _on_tree_clicked(p: Position) -> void:
 	print("tree clicked: " + str(p))
+	var tree = _get_tree(p)
+	_set_selected(tree)
 
 #
 # Santa
@@ -80,6 +89,7 @@ func _update_santa_position() -> void:
 
 func _on_santa_clicked() -> void:
 	print("santa clicked")
+	_set_selected(_santa)
 
 #
 # Godot overrides
@@ -95,7 +105,3 @@ func _process(_delta: float) -> void:
 		var from = Position.new(4, 0)
 		var to = Position.new(3, 0)
 		_logic.tree_move(from, to)
-
-	_update_santa_position()
-	for tp in _logic.get_tree_positions():
-		_update_tree_position(tp)

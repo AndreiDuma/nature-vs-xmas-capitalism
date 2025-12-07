@@ -5,3 +5,4 @@ func _on_restart_clicked() -> void:
 
 func _on_background_clicked() -> void:
 	print("background clicked")
+	$Board.clear_selected()
