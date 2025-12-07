@@ -9,6 +9,8 @@ var _trees: Array[Array] = _make_board()
 var _santa: Santa = null
 
 var _selected = null
+var _santa_selected := false
+var _tree_selected: Position = null
 
 func _make_board(value = null) -> Array[Array]:
 	var _board: Array[Array] = []
@@ -33,6 +35,8 @@ func clear_selected() -> void:
 	if _selected != null:
 		_selected.selected = false
 	_selected = null
+	_tree_selected = null
+	_santa_selected = false
 
 #
 # Squares
@@ -69,10 +73,15 @@ func _instantiate_trees() -> void:
 		$Trees.add_child(tree)
 		_set_tree(p, tree)
 
+func _select_tree(p: Position) -> void:
+	_set_selected(_get_tree(p))
+	_tree_selected = p
+
 func _on_tree_clicked(p: Position) -> void:
 	print("tree clicked: " + str(p))
-	var tree = _get_tree(p)
-	_set_selected(tree)
+	clear_selected()
+	if _logic.can_trees_play():
+		_select_tree(p)
 
 #
 # Santa
@@ -87,9 +96,15 @@ func _instantiate_santa() -> void:
 func _update_santa_position() -> void:
 	_santa.position = _to_vector(_logic.get_santa_position())
 
+func _select_santa() -> void:
+	_set_selected(_santa)
+	_santa_selected = true
+
 func _on_santa_clicked() -> void:
 	print("santa clicked")
-	_set_selected(_santa)
+	clear_selected()
+	if _logic.can_santa_play():
+		_select_santa()
 
 #
 # Godot overrides

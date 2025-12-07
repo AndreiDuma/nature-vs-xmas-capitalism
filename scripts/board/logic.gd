@@ -146,6 +146,9 @@ func santa_kill_and_move(to: Position) -> bool:
 	# Impossible kill & move.
 	return false
 
+func can_santa_play() -> bool:
+	return game_state in [GameState.TURN_SANTA, GameState.TURN_ANY]
+
 #
 # Trees
 #
@@ -178,6 +181,9 @@ func tree_move(from: Position, to: Position) -> bool:
 
 	# Impossible move.
 	return false
+
+func can_trees_play() -> bool:
+	return game_state in [GameState.TURN_TREES, GameState.TURN_ANY]
 
 #
 # Random
