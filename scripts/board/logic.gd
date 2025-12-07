@@ -32,7 +32,7 @@ var _board = [
 
 enum GameState {TURN_SANTA, TURN_TREES, TURN_ANY, GAME_OVER}
 
-var game_state := GameState.TURN_TREES
+var game_state := GameState.TURN_ANY
 
 static func _is_valid_position(p: Position) -> bool:
 	if p.x < 0 || p.x > 6 || p.y < 0 || p.y > 6:
@@ -113,12 +113,15 @@ func available_santa_kills() -> Array[Position]:
 		if not _is_valid_position(op):
 			continue
 		if _get_piece(op) == EMPTY:
-			kills.append([op.x, op.y])
+			kills.append(op)
 	return kills
 
 func santa_move(to: Position) -> bool:
 	assert(_is_valid_position(to))
 	var from = get_santa_position()
+
+	if not can_santa_play():
+		return false
 
 	if to.in_array(available_santa_moves()):
 		# Successful Santa move.
@@ -129,22 +132,25 @@ func santa_move(to: Position) -> bool:
 	# Impossible move
 	return false
 
-func santa_kill_and_move(to: Position) -> bool:
+func santa_kill_and_move(to: Position) -> Position:
 	assert(_is_valid_position(to))
 	var from = get_santa_position()
+
+	if not can_santa_play():
+		return null
 
 	if to.in_array(available_santa_kills()):
 		# Successful kill & move.
 		_set_piece(from, Piece.EMPTY)
 		_set_piece(to, Piece.SANTA)
 		@warning_ignore("integer_division")
-		var t = Position.new(((from.x + to.x) / 2), (from.y + to.y) / 2)
-		assert(_get_piece(t) == TREE)
-		_set_piece(t, Piece.EMPTY)
-		return true
+		var victim = Position.new(((from.x + to.x) / 2), (from.y + to.y) / 2)
+		assert(_get_piece(victim) == TREE)
+		_set_piece(victim, Piece.EMPTY)
+		return victim
 
 	# Impossible kill & move.
-	return false
+	return null
 
 func can_santa_play() -> bool:
 	return game_state in [GameState.TURN_SANTA, GameState.TURN_ANY]
@@ -172,6 +178,9 @@ func tree_move(from: Position, to: Position) -> bool:
 	assert(_is_valid_position(from))
 	assert(_is_valid_position(to))
 	assert(_get_piece(from) == TREE)
+
+	if not can_trees_play():
+		return false
 
 	if to.in_array(available_tree_moves(from)):
 		# Successful move.

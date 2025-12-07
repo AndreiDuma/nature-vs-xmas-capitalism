@@ -52,6 +52,28 @@ func _instantiate_squares() -> void:
 
 func _on_square_clicked(p: Position) -> void:
 	print("square clicked: " + str(p))
+
+	# Attempt Santa move (and kill).
+	if _santa_selected:
+		var to = p
+		if _logic.santa_move(to):
+			print("santa moved!")
+			_move_santa(to)
+		else:
+			var victim = _logic.santa_kill_and_move(to)
+			if victim != null:
+				print("santa killed %s" % victim)
+				_kill_tree(victim)
+				_move_santa(to)
+
+	# Attempt tree move.
+	if _tree_selected:
+		var from = _tree_selected
+		var to = p
+		if _logic.tree_move(from, to):
+			_move_tree(from, to)
+			print("tree moved!")
+
 	clear_selected()
 
 #
@@ -77,6 +99,22 @@ func _select_tree(p: Position) -> void:
 	_set_selected(_get_tree(p))
 	_tree_selected = p
 
+func _move_tree(from: Position, to: Position) -> void:
+	var tree = _get_tree(from)
+	tree.position = _to_vector(to)
+	# Replace now-broken signal connection.
+	tree.clicked.disconnect(_on_tree_clicked)
+	tree.clicked.connect(_on_tree_clicked.bind(to))
+	# Record move into tree matrix.
+	_set_tree(from, null)
+	_set_tree(to, tree)
+
+func _kill_tree(p: Position) -> void:
+	var tree = _get_tree(p)
+	#tree.clicked.disconnect(_on_tree_clicked)
+	tree.queue_free()
+	_set_tree(p, null)
+
 func _on_tree_clicked(p: Position) -> void:
 	print("tree clicked: " + str(p))
 	clear_selected()
@@ -99,6 +137,9 @@ func _update_santa_position() -> void:
 func _select_santa() -> void:
 	_set_selected(_santa)
 	_santa_selected = true
+
+func _move_santa(to: Position) -> void:
+	_santa.position = _to_vector(to)
 
 func _on_santa_clicked() -> void:
 	print("santa clicked")
