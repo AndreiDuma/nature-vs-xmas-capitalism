@@ -9,12 +9,12 @@
 script = ExtResource("1_sugp2")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.8, 1.8)
+zoom = Vector2(2.2, 2.2)
 
 [node name="Board" parent="." instance=ExtResource("1_o5qli")]
 
 [node name="Restart" parent="." instance=ExtResource("1_0wfyh")]
-position = Vector2(-408, -408)
+position = Vector2(-288, -288)
 
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_jyhfs")
