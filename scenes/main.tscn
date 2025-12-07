@@ -9,7 +9,8 @@
 script = ExtResource("1_sugp2")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2.2, 2.2)
+position = Vector2(0, 8)
+zoom = Vector2(1.6, 1.6)
 
 [node name="Board" parent="." instance=ExtResource("1_o5qli")]
 
