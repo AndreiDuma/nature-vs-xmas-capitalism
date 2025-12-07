@@ -1,5 +1,5 @@
 extends Node2D
-class_name SnowyTree
+class_name XmaxTree
 
 enum State {SNOWY, FALLING, DECORATED, DEAD}
 

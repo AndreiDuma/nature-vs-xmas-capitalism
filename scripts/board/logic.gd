@@ -23,7 +23,7 @@ static func is_allowed_position(p: Position) -> bool:
 
 static func neighbor_positions(p: Position, include_diagonals: bool) -> Array[Position]:
 	assert(is_allowed_position(p))
-	var candidates = []
+	var candidates: Array[Position] = []
 	for d in [
 		Position.new(-1, 0),
 		Position.new(0, -1),
@@ -72,6 +72,17 @@ func get_santa_position() -> Position:
 	assert(santa_position != null)
 	return santa_position
 
+func get_tree_positions() -> Array[Position]:
+	var ps: Array[Position] = []
+	for x in range(SIZE):
+		for y in range(SIZE):
+			var p = Position.new(x, y)
+			if not is_allowed_position(p):
+				continue
+			if get_piece(p) == TREE:
+				ps.append(p)
+	return ps
+
 func available_moves(p: Position, include_diagonals: bool) -> Array[Position]:
 	assert(is_allowed_position(p) and get_piece(p) in [SANTA, TREE])
 	return neighbor_positions(p, include_diagonals).filter(
@@ -83,7 +94,7 @@ func available_santa_moves(p: Position) -> Array[Position]:
 	return available_moves(p, true)
 
 func available_santa_kills(p: Position) -> Array[Position]:
-	var kills = []
+	var kills: Array[Position] = []
 	for np in neighbor_positions(p, true):
 		if get_piece(np) != TREE:
 			continue
@@ -104,27 +115,27 @@ func move(from: Position, to: Position) -> bool:
 	assert(is_allowed_position(to))
 
 	if get_piece(from) == SANTA:
-		if [to.x, to.y] in available_santa_moves(from):
-			board.set_piece(from, EMPTY)
-			board.set_piece(to, SANTA)
+		if to.in_array(available_santa_moves(from)):
+			set_piece(from, Piece.EMPTY)
+			set_piece(to, Piece.SANTA)
 			# TODO: Consider emitting a signal `santa_moved`.
 			return true
-		elif [to.x, to.y] in available_santa_kills(from):
-			board.set_piece(from, EMPTY)
-			board.set_piece(to, SANTA)
+		elif to.in_array(available_santa_kills(from)):
+			set_piece(from, Piece.EMPTY)
+			set_piece(to, Piece.SANTA)
 			@warning_ignore("integer_division")
 			var t = Position.new(((from.x + to.x) / 2), (from.y + to.y) / 2)
 			assert(get_piece(t) == TREE)
-			board.set_piece(t, EMPTY)
+			set_piece(t, Piece.EMPTY)
 			# TODO: Consider emitting a signal `tree_killed`.
 			return true
 		else:
 			return false
 
 	if get_piece(from) == TREE:
-		if [to.x, to.y] in available_tree_moves(from):
-			board.set_piece(from, EMPTY)
-			board.set_piece(to, TREE)
+		if to.in_array(available_tree_moves(from)):
+			set_piece(from, Piece.EMPTY)
+			set_piece(to, Piece.TREE)
 			# TODO: Consider emitting a signal `tree_moved`.
 			return true
 
