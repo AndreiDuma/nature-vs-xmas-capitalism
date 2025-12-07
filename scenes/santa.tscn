@@ -81,6 +81,7 @@ polygon = PackedVector2Array(8, -40, 16, -32, 24, 0, 24, 8, 40, 16, 40, 24, 16, 
 
 [node name="Chainsaw" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_wftxb")
+volume_db = 10.0
 pitch_scale = 1.75
 
 [connection signal="clicked" from="Clickable" to="." method="_on_click"]
