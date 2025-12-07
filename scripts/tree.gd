@@ -6,7 +6,7 @@ enum State {SNOWY, FALLING, DECORATED, DEAD}
 @export var state: State = State.SNOWY
 @export var selected: bool = false
 
-signal clicked(tree: XmaxTree)
+signal clicked
 
 func fade():
 	var tween = get_tree().create_tween()
@@ -14,7 +14,7 @@ func fade():
 
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event.is_pressed():
-		clicked.emit(self)
+		clicked.emit()
 
 func _process(_delta):
 	match state:

@@ -65,6 +65,23 @@ func _available_moves(p: Position, include_diagonals: bool) -> Array[Position]:
 		func (np): return _get_piece(np) == EMPTY
 	)
 
+#
+# Utilities
+#
+
+static func valid_positions() -> Array[Position]:
+	var ps: Array[Position] = []
+	for i in range(Logic.SIZE):
+		for j in range(Logic.SIZE):
+			var p = Position.new(i, j)
+			if Logic._is_valid_position(p):
+				ps.append(p)
+	return ps
+
+#
+# Santa
+#
+
 func get_santa_position() -> Position:
 	var santa_position = null
 	for x in range(SIZE):
@@ -77,17 +94,6 @@ func get_santa_position() -> Position:
 				santa_position = p
 	assert(santa_position != null)
 	return santa_position
-
-func get_tree_positions() -> Array[Position]:
-	var ps: Array[Position] = []
-	for x in range(SIZE):
-		for y in range(SIZE):
-			var p = Position.new(x, y)
-			if not _is_valid_position(p):
-				continue
-			if _get_piece(p) == TREE:
-				ps.append(p)
-	return ps
 
 func available_santa_moves() -> Array[Position]:
 	return _available_moves(get_santa_position(), true)
@@ -105,10 +111,6 @@ func available_santa_kills() -> Array[Position]:
 		if _get_piece(op) == EMPTY:
 			kills.append([op.x, op.y])
 	return kills
-
-func available_tree_moves(p: Position) -> Array[Position]:
-	assert(_is_valid_position(p) and _get_piece(p) == TREE)
-	return _available_moves(p, false)
 
 func santa_move(to: Position) -> bool:
 	assert(_is_valid_position(to))
@@ -140,6 +142,25 @@ func santa_kill_and_move(to: Position) -> bool:
 	# Impossible kill & move.
 	return false
 
+#
+# Trees
+#
+
+func get_tree_positions() -> Array[Position]:
+	var ps: Array[Position] = []
+	for x in range(SIZE):
+		for y in range(SIZE):
+			var p = Position.new(x, y)
+			if not _is_valid_position(p):
+				continue
+			if _get_piece(p) == TREE:
+				ps.append(p)
+	return ps
+
+func available_tree_moves(p: Position) -> Array[Position]:
+	assert(_is_valid_position(p) and _get_piece(p) == TREE)
+	return _available_moves(p, false)
+
 func tree_move(from: Position, to: Position) -> bool:
 	assert(_is_valid_position(from))
 	assert(_is_valid_position(to))
@@ -153,6 +174,10 @@ func tree_move(from: Position, to: Position) -> bool:
 
 	# Impossible move.
 	return false
+
+#
+# Random
+#
 
 # TODO: Delete once definitely not needed.
 func _move(from: Position, to: Position) -> bool:
