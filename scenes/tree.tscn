@@ -1,11 +1,28 @@
-[gd_scene load_steps=15 format=3 uid="uid://rd2s0sy8f0sv"]
+[gd_scene load_steps=20 format=3 uid="uid://rd2s0sy8f0sv"]
 
 [ext_resource type="Script" uid="uid://4334xqf5hbit" path="res://scripts/tree.gd" id="1_viusy"]
 [ext_resource type="PackedScene" uid="uid://ltcxa74831fr" path="res://scenes/halo.tscn" id="1_vplca"]
 [ext_resource type="Texture2D" uid="uid://cdg13ulq8h8ur" path="res://assets/sprites/very-snowy-tree.png" id="1_ypl48"]
 [ext_resource type="Texture2D" uid="uid://cu60wdxfpnvok" path="res://assets/sprites/very-snowy-tree-falling.png" id="3_ake3r"]
+[ext_resource type="Texture2D" uid="uid://bx36ssr1k2j8b" path="res://assets/sprites/tree-dancing.png" id="3_dmmp0"]
 [ext_resource type="Texture2D" uid="uid://dyguwjrax46u0" path="res://assets/sprites/decorated-tree.png" id="3_qd6xs"]
 [ext_resource type="PackedScene" uid="uid://cn1xveyq1qhw3" path="res://scenes/clickable.tscn" id="6_18mvg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2bmcu"]
+atlas = ExtResource("3_dmmp0")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_528u0"]
+atlas = ExtResource("3_dmmp0")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0l3a"]
+atlas = ExtResource("3_dmmp0")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_70dru"]
+atlas = ExtResource("3_dmmp0")
+region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ake3r"]
 atlas = ExtResource("3_qd6xs")
@@ -37,6 +54,23 @@ region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8qw6h"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2bmcu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_528u0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0l3a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_70dru")
+}],
+"loop": true,
+"name": &"dancing",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ake3r")
@@ -86,7 +120,7 @@ visible = false
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_8qw6h")
-animation = &"falling"
+animation = &"dancing"
 
 [node name="Clickable" parent="." instance=ExtResource("6_18mvg")]
 
