@@ -4,18 +4,18 @@ const BOARD_UNIT_SIZE = 96
 
 var board = Board.new()
 var santa: Santa = null
-var conifers: Array[Array] = []
+var trees: Array[Array] = []
 
 func from_logical(p: Position) -> Vector2:
 	return BOARD_UNIT_SIZE * Vector2(p.y - 3, p.x - 3)
 
 func get_tree_node(p: Position) -> XmaxTree:
 	assert(board.get_piece(p) == Board.TREE)
-	return conifers[p.x][p.y]
+	return trees[p.x][p.y]
 
 func set_tree_node(p, c: XmaxTree) -> void:
 	assert(board.get_piece(p) == Board.TREE)
-	conifers[p.x][p.y] = c
+	trees[p.x][p.y] = c
 
 func update_santa_position() -> void:
 	santa.position = from_logical(board.get_santa_position())
@@ -26,11 +26,11 @@ func update_tree_position(p: Position) -> void:
 
 func _ready() -> void:
 	# Instantiate trees
-	conifers.resize(Board.SIZE)
-	conifers.fill([])
-	for cs in conifers:
-		cs.resize(Board.SIZE)
-		cs.fill(null)
+	trees.resize(Board.SIZE)
+	trees.fill([])
+	for ts in trees:
+		ts.resize(Board.SIZE)
+		ts.fill(null)
 
 	for i in Board.SIZE:
 		for j in Board.SIZE:
@@ -38,9 +38,9 @@ func _ready() -> void:
 			if not Board.is_allowed_position(p):
 				continue
 			if board.get_piece(p) == Board.TREE:
-				var conifer = preload("res://scenes/tree.tscn").instantiate()
-				set_tree_node(p, conifer)
-				add_child(conifer)
+				var tree: XmaxTree = preload("res://scenes/tree.tscn").instantiate()
+				set_tree_node(p, tree)
+				add_child(tree)
 				update_tree_position(p)
 
 	# Instantiate Santa
