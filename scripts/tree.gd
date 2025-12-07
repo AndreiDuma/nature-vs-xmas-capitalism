@@ -6,6 +6,16 @@ enum State {SNOWY, FALLING, DECORATED, DEAD}
 @export var state: State = State.SNOWY
 @export var selected: bool = false
 
+signal clicked(tree: XmaxTree)
+
+func fade():
+	var tween = get_tree().create_tween()
+	tween.tween_property($Sprite, "modulate", Color.TRANSPARENT, 1.0)
+
+func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event.is_pressed():
+		clicked.emit(self)
+
 func _process(_delta):
 	match state:
 		State.SNOWY:
@@ -20,7 +30,3 @@ func _process(_delta):
 			fade()
 	
 	$Halo.visible = selected
-
-func fade():
-	var tween = get_tree().create_tween()
-	tween.tween_property($Sprite, "modulate", Color.TRANSPARENT, 1.0)

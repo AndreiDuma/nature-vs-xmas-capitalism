@@ -13,19 +13,23 @@ func get_tree_node(p: Position) -> XmaxTree:
 	assert(board.get_piece(p) == Board.TREE)
 	return trees[p.x][p.y]
 
-func set_tree_node(p, c: XmaxTree) -> void:
+func set_tree_node(p: Position, c: XmaxTree) -> void:
 	assert(board.get_piece(p) == Board.TREE)
 	trees[p.x][p.y] = c
+
+func instantiate_santa() -> void:
+	santa = preload("res://scenes/santa.tscn").instantiate()
+	update_santa_position()
+	santa.clicked.connect(_on_santa_clicked)
+	add_child(santa)
 
 func update_santa_position() -> void:
 	santa.position = from_logical(board.get_santa_position())
 
-func update_tree_position(p: Position) -> void:
-	assert(board.get_piece(p) == Board.TREE)
-	get_tree_node(p).position = from_logical(p)
+func _on_santa_clicked() -> void:
+	print("santa clicked")
 
-func _ready() -> void:
-	# Instantiate trees
+func instantiate_trees() -> void:
 	trees.resize(Board.SIZE)
 	trees.fill([])
 	for ts in trees:
@@ -40,13 +44,20 @@ func _ready() -> void:
 			if board.get_piece(p) == Board.TREE:
 				var tree: XmaxTree = preload("res://scenes/tree.tscn").instantiate()
 				set_tree_node(p, tree)
-				add_child(tree)
 				update_tree_position(p)
+				tree.clicked.connect(_on_tree_clicked)
+				add_child(tree)
 
-	# Instantiate Santa
-	santa = preload("res://scenes/santa.tscn").instantiate()
-	update_santa_position()
-	add_child(santa)
+func update_tree_position(p: Position) -> void:
+	assert(board.get_piece(p) == Board.TREE)
+	get_tree_node(p).position = from_logical(p)
+
+func _on_tree_clicked(tree: XmaxTree) -> void:
+	print("tree clicked: " + str(tree))
+
+func _ready() -> void:
+	instantiate_santa()
+	instantiate_trees()
 
 func _process(_delta: float) -> void:
 	if Input.is_key_pressed(KEY_ENTER):

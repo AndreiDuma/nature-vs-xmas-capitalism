@@ -71,3 +71,10 @@ position = Vector2(4, 0)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_fm1lf")
 animation = &"chop"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(8, -40, 16, -32, 24, 0, 24, 8, 40, 16, 40, 24, 16, 40, -16, 40, -24, -24, -16, -40)
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
