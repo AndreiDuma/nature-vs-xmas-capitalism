@@ -13,6 +13,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="SelectionHalo" type="AnimatedSprite2D"]
+[node name="Sprite" type="AnimatedSprite2D"]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_btrnl")
