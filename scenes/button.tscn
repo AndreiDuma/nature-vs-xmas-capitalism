@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cuxuarsrmh4iq"]
-
-[ext_resource type="Texture2D" uid="uid://dy8f53hvrprdt" path="res://assets/sprites/restart-icon.png" id="1_mi6dp"]
-
-[node name="Restart" type="Sprite2D"]
-scale = Vector2(4.5, 4.5)
-texture = ExtResource("1_mi6dp")

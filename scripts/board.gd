@@ -5,6 +5,7 @@ const BOARD_UNIT_SIZE = 96
 var _board: Board = Board.new()
 var _santa: Santa = null
 var _trees: Array[Array] = []
+var _restart = null
 
 func _to_vector(p: Position) -> Vector2:
 	return BOARD_UNIT_SIZE * Vector2(p.y - 3, p.x - 3)
@@ -58,6 +59,20 @@ func _update_tree_position(p: Position) -> void:
 func _on_tree_clicked(tree: XmaxTree) -> void:
 	print("tree clicked: " + str(tree))
 
+### Restart ###
+
+func _instantiate_restart() -> void:
+	_restart = preload("res://scenes/restart.tscn").instantiate()
+	_update_restart_position()
+	_restart.clicked.connect(_on_restart_clicked)
+	add_child(_restart)
+
+func _update_restart_position() -> void:
+	_restart.position = _to_vector(Position.new(-1, -1))
+
+func _on_restart_clicked() -> void:
+	print("restart clicked")
+
 #
 # Godot overrides
 #
@@ -65,6 +80,7 @@ func _on_tree_clicked(tree: XmaxTree) -> void:
 func _ready() -> void:
 	_instantiate_santa()
 	_instantiate_trees()
+	_instantiate_restart()
 
 func _process(_delta: float) -> void:
 	if Input.is_key_pressed(KEY_ENTER):

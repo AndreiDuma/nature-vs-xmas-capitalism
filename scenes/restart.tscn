@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cuxuarsrmh4iq"]
+
+[ext_resource type="Script" uid="uid://d0mr7a1hvdaqr" path="res://scenes/restart.gd" id="1_7dg1w"]
+[ext_resource type="Texture2D" uid="uid://dy8f53hvrprdt" path="res://assets/sprites/restart-icon.png" id="1_mi6dp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q5shd"]
+radius = 17.0
+
+[node name="Restart" type="Node2D"]
+script = ExtResource("1_7dg1w")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("1_mi6dp")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_q5shd")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
