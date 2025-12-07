@@ -1,5 +1,5 @@
 extends RefCounted
-class_name Board
+class_name Logic
 
 const SIZE = 7
 

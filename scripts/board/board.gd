@@ -2,10 +2,10 @@ extends Node2D
 
 const BOARD_UNIT_SIZE = 96
 
-var _board: Board = Board.new()
+var _logic: Logic = Logic.new()
+
 var _santa: Santa = null
 var _trees: Array[Array] = []
-var _restart = null
 
 func _to_vector(p: Position) -> Vector2:
 	return BOARD_UNIT_SIZE * Vector2(p.y - 3, p.x - 3)
@@ -19,7 +19,7 @@ func _instantiate_santa() -> void:
 	add_child(_santa)
 
 func _update_santa_position() -> void:
-	_santa.position = _to_vector(_board.get_santa_position())
+	_santa.position = _to_vector(_logic.get_santa_position())
 
 func _on_santa_clicked() -> void:
 	print("santa clicked")
@@ -27,26 +27,24 @@ func _on_santa_clicked() -> void:
 ### Trees ###
 
 func _get_tree(p: Position) -> XmaxTree:
-	assert(_board._get_piece(p) == Board.TREE)
 	return _trees[p.x][p.y]
 
 func _set_tree(p: Position, c: XmaxTree) -> void:
-	assert(_board._get_piece(p) == Board.TREE)
 	_trees[p.x][p.y] = c
 
 func _instantiate_trees() -> void:
-	_trees.resize(Board.SIZE)
+	_trees.resize(Logic.SIZE)
 	_trees.fill([])
 	for ts in _trees:
-		ts.resize(Board.SIZE)
+		ts.resize(Logic.SIZE)
 		ts.fill(null)
 
-	for i in Board.SIZE:
-		for j in Board.SIZE:
+	for i in range(Logic.SIZE):
+		for j in range(Logic.SIZE):
 			var p = Position.new(i, j)
-			if not Board._is_valid_position(p):
+			if not Logic._is_valid_position(p):
 				continue
-			if _board._get_piece(p) == Board.TREE:
+			if _logic._get_piece(p) == Logic.TREE:
 				var tree: XmaxTree = preload("res://scenes/tree.tscn").instantiate()
 				_set_tree(p, tree)
 				_update_tree_position(p)
@@ -59,20 +57,6 @@ func _update_tree_position(p: Position) -> void:
 func _on_tree_clicked(tree: XmaxTree) -> void:
 	print("tree clicked: " + str(tree))
 
-### Restart ###
-
-func _instantiate_restart() -> void:
-	_restart = preload("res://scenes/restart.tscn").instantiate()
-	_update_restart_position()
-	_restart.clicked.connect(_on_restart_clicked)
-	add_child(_restart)
-
-func _update_restart_position() -> void:
-	_restart.position = _to_vector(Position.new(-1, -1))
-
-func _on_restart_clicked() -> void:
-	print("restart clicked")
-
 #
 # Godot overrides
 #
@@ -80,14 +64,13 @@ func _on_restart_clicked() -> void:
 func _ready() -> void:
 	_instantiate_santa()
 	_instantiate_trees()
-	_instantiate_restart()
 
 func _process(_delta: float) -> void:
 	if Input.is_key_pressed(KEY_ENTER):
 		var from = Position.new(4, 0)
 		var to = Position.new(3, 0)
-		_board.tree_move(from, to)
+		_logic.tree_move(from, to)
 
 	_update_santa_position()
-	for tp in _board.get_tree_positions():
+	for tp in _logic.get_tree_positions():
 		_update_tree_position(tp)
