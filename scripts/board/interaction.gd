@@ -101,7 +101,7 @@ func _select_tree(p: Position) -> void:
 
 func _move_tree(from: Position, to: Position) -> void:
 	var tree = _get_tree(from)
-	tree.position = _to_vector(to)
+	tree.move(_to_vector(to))
 	# Replace now-broken signal connection.
 	tree.clicked.disconnect(_on_tree_clicked)
 	tree.clicked.connect(_on_tree_clicked.bind(to))

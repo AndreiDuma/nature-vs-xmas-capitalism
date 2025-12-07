@@ -8,6 +8,9 @@ enum State {SNOWY, FALLING, DEAD, DECORATED}
 
 signal clicked
 
+func move(to: Vector2) -> void:
+	create_tween().tween_property(self, "position", to, 0.25).set_trans(Tween.TRANS_SINE)
+
 func die():
 	await get_tree().create_timer(0.5).timeout
 	state = State.FALLING
