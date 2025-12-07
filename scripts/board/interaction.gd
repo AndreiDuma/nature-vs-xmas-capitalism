@@ -64,7 +64,7 @@ func _on_square_clicked(p: Position) -> void:
 			if victim != null:
 				print("santa killed %s" % victim)
 				_kill_tree(victim)
-				_move_santa(to)
+				_move_santa(to, true)
 
 	# Attempt tree move.
 	if _tree_selected:
@@ -138,8 +138,11 @@ func _select_santa() -> void:
 	_set_selected(_santa)
 	_santa_selected = true
 
-func _move_santa(to: Position) -> void:
-	_santa.position = _to_vector(to)
+func _move_santa(to: Position, kill := false) -> void:
+	if kill:
+		_santa.saw(_to_vector(to))
+	else:
+		_santa.move(_to_vector(to))
 
 func _on_santa_clicked() -> void:
 	print("santa clicked")

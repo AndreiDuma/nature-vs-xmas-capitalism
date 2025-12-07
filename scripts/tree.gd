@@ -9,6 +9,7 @@ enum State {SNOWY, FALLING, DEAD, DECORATED}
 signal clicked
 
 func die():
+	await get_tree().create_timer(0.5).timeout
 	state = State.FALLING
 
 func _update_animation():
@@ -20,7 +21,7 @@ func _update_animation():
 			if $Sprite.frame == 3:
 				state = State.DEAD
 		State.DEAD:
-			var tween = get_tree().create_tween()
+			var tween = create_tween()
 			tween.tween_property($Sprite, "modulate", Color.TRANSPARENT, 1.0)
 			tween.tween_callback(queue_free)
 		State.DECORATED:

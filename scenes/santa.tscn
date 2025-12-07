@@ -47,7 +47,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_unnpg")
 }],
 "loop": true,
-"name": &"chop",
+"name": &"saw",
 "speed": 5.0
 }, {
 "frames": [{
@@ -72,7 +72,7 @@ scale = Vector2(2.9999998, 2.9999995)
 position = Vector2(4, 0)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_fm1lf")
-animation = &"chop"
+animation = &"saw"
 
 [node name="Clickable" parent="." instance=ExtResource("5_wftxb")]
 
