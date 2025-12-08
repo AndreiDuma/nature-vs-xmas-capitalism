@@ -1,7 +1,7 @@
 extends Node2D
 class_name XmaxTree
 
-enum State {SNOWY, FALLING, DEAD, DECORATED}
+enum State {SNOWY, FALLING, DEAD, DECORATED, CELEBRATING}
 
 @export var state: State = State.SNOWY
 @export var selected: bool = false
@@ -14,6 +14,9 @@ func move(to: Vector2) -> void:
 func die():
 	await get_tree().create_timer(0.5).timeout
 	state = State.FALLING
+
+func celebrate():
+	state = State.CELEBRATING
 
 func _update_animation():
 	match state:
@@ -29,6 +32,8 @@ func _update_animation():
 			tween.tween_callback(queue_free)
 		State.DECORATED:
 			$Sprite.play("decorated")
+		State.CELEBRATING:
+			$Sprite.play("celebrating")
 
 func _update_halo():
 	$Halo.visible = selected

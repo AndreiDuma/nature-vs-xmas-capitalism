@@ -68,7 +68,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_70dru")
 }],
 "loop": true,
-"name": &"dancing",
+"name": &"celebrating",
 "speed": 5.0
 }, {
 "frames": [{
@@ -120,7 +120,7 @@ visible = false
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_8qw6h")
-animation = &"dancing"
+animation = &"celebrating"
 
 [node name="Clickable" parent="." instance=ExtResource("6_18mvg")]
 

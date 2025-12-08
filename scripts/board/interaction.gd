@@ -188,4 +188,10 @@ func _ready() -> void:
 	_instantiate_santa()
 
 func _process(_delta: float) -> void:
-	pass
+	if _logic.did_trees_win():
+		for p in _logic.get_tree_positions():
+			var tree = _get_tree(p)
+			tree.celebrate()
+
+	if _logic.did_santa_win():
+		pass
