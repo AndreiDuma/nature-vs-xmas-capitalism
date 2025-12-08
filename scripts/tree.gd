@@ -18,6 +18,15 @@ func die():
 func celebrate():
 	state = State.CELEBRATING
 
+func decorate():
+	$Sprite.scale = Vector2.ZERO
+	await get_tree().create_timer(1.5).timeout
+	create_tween().tween_property($Sprite, "scale", 3 * Vector2.ONE, 1.0).set_trans(Tween.TRANS_SINE)
+	show()
+
+func undecorate():
+	hide()
+
 func _update_animation():
 	match state:
 		State.SNOWY:

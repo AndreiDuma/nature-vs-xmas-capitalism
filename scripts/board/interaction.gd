@@ -12,6 +12,8 @@ var _selected = null
 var _santa_selected := false
 var _tree_selected: Position = null
 
+var _next_to_decorate: int = 1
+
 func _make_board(value = null) -> Array[Array]:
 	var _board: Array[Array] = []
 	_board.resize(Logic.BOARD_SIZE)
@@ -64,6 +66,7 @@ func _on_square_clicked(p: Position) -> void:
 			if victim != null:
 				print("santa killed %s" % victim)
 				_kill_tree(victim)
+				_decorate_a_tree()
 				_move_santa(to, true)
 
 	# Attempt tree move.
@@ -116,6 +119,15 @@ func _kill_tree(p: Position) -> void:
 	tree.clicked.disconnect(_on_tree_clicked)
 	tree.die()
 	_set_tree(p, null)
+
+func _decorate_a_tree() -> void:
+	var tree = $DecoratedLater.get_node("Tree-%s" % _next_to_decorate)
+	_next_to_decorate = _next_to_decorate % 13 + 1
+	tree.decorate()
+
+func _undecorate_all_trees() -> void:
+	for tree: XmaxTree in $DecoratedLater.get_children():
+		tree.undecorate()
 
 func _on_tree_clicked(p: Position) -> void:
 	print("tree clicked: " + str(p))
@@ -173,6 +185,9 @@ func restart_game() -> void:
 	_selected = null
 	_santa_selected = false
 	_tree_selected = null
+	
+	# Undecorate trees.
+	_undecorate_all_trees()
 
 	# Restart logic game and reinitialize scene.
 	_logic.restart_game()

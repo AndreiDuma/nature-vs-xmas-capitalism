@@ -120,7 +120,7 @@ visible = false
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_8qw6h")
-animation = &"celebrating"
+animation = &"snowy"
 
 [node name="Clickable" parent="." instance=ExtResource("6_18mvg")]
 

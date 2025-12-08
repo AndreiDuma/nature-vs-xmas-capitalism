@@ -51,6 +51,7 @@ const initial_board = [
 	#[I, I, T, T, T, I, I],
 	#[I, I, E, S, T, I, I],
 #]
+
 var _board = initial_board.duplicate_deep()
 
 const initial_game_state = GameState.TURN_ANY
